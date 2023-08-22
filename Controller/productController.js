@@ -1,4 +1,4 @@
-const { collection, getDocs } = require("@firebase/firestore");
+const { collection, getDocs, query, where } = require("@firebase/firestore");
 const { firestore } = require("./controller");
 
 const products = async (req, res) => {
@@ -12,4 +12,20 @@ const products = async (req, res) => {
     }
 }
 
-module.exports = products;
+const getSingleProduct = async (req, res) => {
+    const name = req.params.id;
+    console.log(name);
+    let data;
+    try {
+        const myCollection = collection(firestore, 'products');
+        const result = query(myCollection, where('name', '==', `${name}`));
+        const querySnapshot = await getDocs(result);
+        querySnapshot.forEach(doc => data = doc.data());
+        res.status(200).json(data); 
+    } catch(error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
+
+module.exports = {products, getSingleProduct};
