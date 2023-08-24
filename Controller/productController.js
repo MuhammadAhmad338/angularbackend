@@ -28,12 +28,12 @@ const getSingleProduct = async (req, res) => {
 
 const searchTheproducts = async (req, res) => {
     const { search } = req.query;
-    let data;
+    let data = [];
     try {
         const gotCollection = collection(firestore, 'products');
         const result = query(gotCollection, where('name', '==', `${search}`));
         const querySnapshot = await getDocs(result);
-        querySnapshot.forEach(doc => data = doc.data());
+        querySnapshot.forEach(doc => data.push(doc.data()));
         res.status(200).json(data);
     } catch(error) {
         res.status(500).json(error);
