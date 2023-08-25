@@ -16,15 +16,13 @@ const products = async (req, res) => {
 const getSingleProduct = async (req, res) => {
     const productId = req.params.id; 
     const integerProductId = parseInt(productId);
-    const resultData = []; // Create an array to store the data
+    let data;
     try {
         const myCollection = collection(firestore, 'products');
         const result = query(myCollection, where('id', '==', integerProductId)); // Create a query
         const querySnapshot = await getDocs(result); // Execute the query and get a snapshot
-        querySnapshot.forEach(doc => {
-            resultData.push(doc.data()); // Push each document's data to the array
-        });
-        res.status(200).json(resultData); // Send the array of data in the response
+        querySnapshot.forEach(mydoc => data = mydoc.data());
+        res.status(200).json(data); // Send the  data in the response
     } catch(error) {
         res.status(500).json(error);
     }
