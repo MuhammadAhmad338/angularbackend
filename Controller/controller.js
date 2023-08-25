@@ -42,7 +42,7 @@ const addCities = async (req, res) => {
 }
 
 const updateCities = async (req, res) => {
-    const { id ,data } = req.body;
+    const { id , data } = req.body;
     try {
         const gotCollection = collection(firestore, 'cities');
         const docRef = doc(gotCollection, id);

@@ -1,10 +1,9 @@
 const express = require('express');
-// Import the functions you need from the SDKs you need
+const app = express();
+const cors = require('cors');
 const router = require('./Endpoints/endpoints.js');
 const authrouter = require('./Endpoints/authEndpoints.js');
 const productrouter = require('./Endpoints/productEndpoints.js');
-const cors = require('cors');
-const app = express();
 
 const port = 8080;
 app.use(express.json());
