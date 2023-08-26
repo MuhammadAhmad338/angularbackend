@@ -1,6 +1,7 @@
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = require("firebase/auth");
 const { collection, getDocs, addDoc, where, query } = require("@firebase/firestore");
 const { initApp, firestore } = require("./controller");
+const uuid = require("uuid");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -43,6 +44,7 @@ const signup = async (req, res) => {
     const user = userCredential.user;
     const gotCollection = collection(firestore, "users");
     await addDoc(gotCollection, {
+      id: uuid.v4(),
       email: user.email,
       password: hashedPassword,
     });

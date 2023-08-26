@@ -1,4 +1,4 @@
-const { collection, getDocs, query, where, getDoc } = require("@firebase/firestore");
+const { collection, getDocs, query, where, getDoc, addDoc } = require("@firebase/firestore");
 const uuid = require("uuid");
 const { firestore } = require("./controller");
 
@@ -8,6 +8,23 @@ const products = async (req, res) => {
      const myDocs = await getDocs(myCollection);
      const products = myDocs.docs.map(doc => doc.data());
      res.status(200).json(products);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+}
+
+const addProduct = async (req, res) => {
+    const { name, price, description } = req.body;
+    const data = {
+        id: uuid.v4(),
+        name, 
+        price, 
+        description
+    }
+    try {
+        const myCollection = collection(firestore, 'products');
+        await addDoc(myCollection, data);
+        res.status(200).json("Product has been Added!");
     } catch(error) {
         res.status(500).json(error);
     }
@@ -56,4 +73,4 @@ const filteredProducts = async (req, res) => {
     }
 }
 
-module.exports = {products, getSingleProduct, searchTheproducts, filteredProducts};
+module.exports = {products, getSingleProduct, searchTheproducts, filteredProducts, addProduct};
